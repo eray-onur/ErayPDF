@@ -1,5 +1,5 @@
 # ErayPDF
-This project is an attempt to provide an alternative way to convert plain HTML files to PDF without the usage of QT Webkit.
+This project is an attempt to provide an alternative way to convert plain HTML files to PDF without relying on anything that utilizes QT Webkit (looking at you, WK).
 <hr>
 
 ### F.A.Q
