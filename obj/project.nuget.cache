@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "Sj9SOF/KyUjHvsozbt0nYVLi35PnKzKzR4KjfYGLpfkrtyvFyMI8n41CY+PfWEv6xy9so/vvZ8aORu/O5sbRXg==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\ErayPDF\\ErayPDF\\ErayPDF.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\eonur\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
+    "C:\\Users\\eonur\\.nuget\\packages\\selenium.webdriver\\4.1.0\\selenium.webdriver.4.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
