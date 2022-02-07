@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ErayPDF
 {
-    public class HtmlToPdfConverter
+    public class HtmlToPdfConverter : IHtmlToPdfConverter
     {
         class Constants
         {
@@ -35,7 +35,7 @@ namespace ErayPDF
         /// </summary>
         /// <param name="htmlPath">Path of html file that will be converted into PDF format.</param>
         /// <returns>Array of bytes that contain PDF data</returns>
-        public async static Task<byte[]> ConvertToBytes(string htmlPath)
+        public async Task<byte[]> ConvertToBytes(string htmlPath)
         {
             var path = ConvertHtmlToPdf(htmlPath);
             var bytes = await File.ReadAllBytesAsync(path);
@@ -48,7 +48,7 @@ namespace ErayPDF
         /// </summary>
         /// <param name="htmlPath">Path of html file that will be converted into PDF format.</param>
         /// <returns>Memory stream of PDF data</returns>
-        public async static Task<MemoryStream> ConvertToMemoryStream(string htmlPath)
+        public async Task<MemoryStream> ConvertToMemoryStream(string htmlPath)
         {
             var path = ConvertHtmlToPdf(htmlPath);
             var memStream = new MemoryStream(await File.ReadAllBytesAsync(path), false);
@@ -61,7 +61,7 @@ namespace ErayPDF
         /// </summary>
         /// <param name="htmlPath"></param>
         /// <returns></returns>
-        public static string ConvertAndSavePDF(string htmlPath)
+        public string ConvertAndSavePDF(string htmlPath)
         {
 
             var path = ConvertHtmlToPdf(htmlPath);

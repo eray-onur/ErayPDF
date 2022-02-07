@@ -2,10 +2,23 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net5;net6</TargetFrameworks>
+    <Description>HTML5 and CSS3 friendly HTML to PDF converter.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/eray-onur/ErayPDF</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <FileVersion>0.0.0.1</FileVersion>
+    <AssemblyVersion>0.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
