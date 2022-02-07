@@ -3,6 +3,7 @@ using OpenQA.Selenium.Chrome;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,15 +81,15 @@ namespace ErayPDF
                 throw new FileNotFoundException();
 
             docName = docName.Replace(".pdf", "");
-            string? path = AppDomain.CurrentDomain.BaseDirectory;
+            string path = AppDomain.CurrentDomain.BaseDirectory;
 
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("headless");
-            using ChromeDriver driver = new(path, chromeOptions);
+            using ChromeDriver driver = new ChromeDriver(path, chromeOptions);
             driver.Navigate().GoToUrl($"{Constants.LocalPrefix}{htmlPath}");
 
             // driver.ExecuteAsyncScript("window.print();");
-            PrintOptions opts = new()
+            PrintOptions opts = new PrintOptions()
             {
                 ShrinkToFit = true,
                 OutputBackgroundImages = true,
