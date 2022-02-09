@@ -1,4 +1,8 @@
-﻿using OpenQA.Selenium;
+﻿using ErayPDF.Strategies;
+
+using Microsoft.AspNetCore.Hosting;
+
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
 using System;
@@ -8,105 +12,85 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ErayPDF
 {
     public class HtmlToPdfConverter : IHtmlToPdfConverter
     {
-        class Constants
-        {
-            public const string LocalPrefix = "file:///";
-            public const string HttpPrefix = "http://";
-            public const string HttpsPrefix = "https://";
-            public const string PdfSuffix = "pdf";
-        }
+        private readonly PdfConversionOptions _pdfConversionOptions;
+        private readonly IHostingEnvironment _webEnvironment;
+        private readonly IPrintStrategy _printStrategy;
 
         /// <summary>
         /// Static CTOR
         /// </summary>
         /// <exception cref="FileNotFoundException">Thrown if no webdrivers are available for conversion process.</exception>
-        static HtmlToPdfConverter()
+        public HtmlToPdfConverter(IHostingEnvironment webEnvironment)
         {
-            if (!File.Exists($"{AppDomain.CurrentDomain.BaseDirectory}/chromedriver.exe"))
+            _pdfConversionOptions = new PdfConversionOptions();
+            _webEnvironment = webEnvironment;
+
+            // Check for any existing drivers.
+            if (!File.Exists($"{_webEnvironment.ContentRootPath}/chromedriver.exe"))
                 throw new FileNotFoundException("Can't find any webdrivers.");
         }
 
         /// <summary>
-        /// Returns an array of bytes that contain PDF data.
+        /// Returns an array of bytes that contain PDF data. Deletes the produced file after byte conversion.
         /// </summary>
         /// <param name="htmlPath">Path of html file that will be converted into PDF format.</param>
         /// <returns>Array of bytes that contain PDF data</returns>
         public async Task<byte[]> ConvertToBytes(string htmlPath)
         {
-            var path = ConvertHtmlToPdf(htmlPath);
-            var bytes = await File.ReadAllBytesAsync(path);
-            //File.Delete(path);
+            string pdfPath = string.Empty;
+            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
+
+            if (pdfPath == string.Empty)
+                throw new FileNotFoundException();
+
+            var bytes = await File.ReadAllBytesAsync(pdfPath);
+            File.Delete(pdfPath);
             return bytes;
         }
 
         /// <summary>
-        /// Returns a memory stream of PDF data.
+        /// Returns a memory stream of PDF data. Deletes the produced PDF after memory stream.
         /// </summary>
         /// <param name="htmlPath">Path of html file that will be converted into PDF format.</param>
         /// <returns>Memory stream of PDF data</returns>
         public async Task<MemoryStream> ConvertToMemoryStream(string htmlPath)
         {
-            var path = ConvertHtmlToPdf(htmlPath);
-            var memStream = new MemoryStream(await File.ReadAllBytesAsync(path), false);
-            File.Delete(path);
+
+            string pdfPath = string.Empty;
+            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
+
+            var memStream = new MemoryStream(await File.ReadAllBytesAsync(pdfPath), false);
+            File.Delete(pdfPath);
+
             return memStream;
         }
 
         /// <summary>
-        /// Persisting converted PDF file and returning its path.
+        /// Persisting converted PDF file and returning its path. Persists the PDF.
         /// </summary>
         /// <param name="htmlPath"></param>
         /// <returns></returns>
         public string ConvertAndSavePDF(string htmlPath)
         {
+            string pdfPath = string.Empty;
+            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
 
-            var path = ConvertHtmlToPdf(htmlPath);
-            return path;
+            return pdfPath;
         }
 
         /// <summary>
-        /// Converting a provided HTML file into PDF.
+        /// Traverses the project for any suitable webdriver.
         /// </summary>
-        /// <param name="htmlPath">Path of html file that will be converted into PDF format.</param>
-        /// <param name="docName">Name of the PDF file to be created.</param>
-        /// <returns>Path of created PDF file</returns>
-        /// <exception cref="FileNotFoundException">Thrown if HTML file is not found in given location.</exception>
-        private static string ConvertHtmlToPdf(string htmlPath, string docName = "doc")
+        /// <returns>filepath for the found webdriver.</returns>
+        private string DetermineDriverPathForConversion()
         {
-            if (!File.Exists(htmlPath))
-                throw new FileNotFoundException();
-
-            docName = docName.Replace(".pdf", "");
-            string path = AppDomain.CurrentDomain.BaseDirectory;
-
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArgument("headless");
-            using ChromeDriver driver = new ChromeDriver(path, chromeOptions);
-            driver.Navigate().GoToUrl($"{Constants.LocalPrefix}{htmlPath}");
-
-            // driver.ExecuteAsyncScript("window.print();");
-            PrintOptions opts = new PrintOptions()
-            {
-                ShrinkToFit = true,
-                OutputBackgroundImages = true,
-                Orientation = PrintOrientation.Portrait,
-                //ScaleFactor = 0.5,
-                PageDimensions =
-                {
-                    Width = 24.80,
-                    Height = 35.08
-                }
-
-            };
-
-            PrintDocument doc = driver.Print(opts);
-            var pdfPath = $"{path}{docName}.{Constants.PdfSuffix}";
-            doc.SaveAsFile(pdfPath);
-            return pdfPath;
+            // TODO: Path determination logic.
+            throw new NotImplementedException();
         }
 
     }
