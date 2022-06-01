@@ -17,5 +17,5 @@ a Chromium binary MUST be added from https://chromium.woolyss.com/ to the root p
 
 #### Usage Example
 ```
-HtmlToPdfConverter.ConvertAndSavePDF(filePath);
+var result = HtmlToPdfConverter.ConvertAndSavePDF(filePath); // Returns generated pdf's path.
 ```
