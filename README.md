@@ -1,6 +1,5 @@
 # ErayPDF
 This project is an attempt to provide an alternative way to convert plain HTML files to PDF without relying on anything that utilizes QT Webkit (looking at you, WK).
-IMPORTANT NOTE: a Chromium binary MUST be added from https://chromium.woolyss.com/ to the root path or printing won't work! Couldn't get it into project as it'd turn the repo to LFS, sorry.
 <hr>
 
 ### F.A.Q
@@ -13,7 +12,7 @@ No. Conversion process is too hard-coded and inflexible to be used in a producti
 #### Does this converter support latest HTML5/CSS3 features?
 Yes.
 #### What is the caveat?
-A modern browser is REQUIRED for this library to function. Ancient browsers such as Internet Explorer is not supported, and will NEVER be supported in the future.
+a Chromium binary MUST be added from https://chromium.woolyss.com/ to the root path or printing won't work! Couldn't get it into project as it'd turn the repo to LFS, sorry.
 <hr>
 
 #### Usage Example
