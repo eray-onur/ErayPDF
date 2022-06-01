@@ -19,7 +19,8 @@ namespace ErayPDF
     {
         private readonly PdfConversionOptions _pdfConversionOptions;
         private readonly IHostingEnvironment _webEnvironment;
-        private readonly IPrintStrategy _printStrategy;
+        private IPrintStrategy _printStrategy;
+        private string driverPath => $"{_webEnvironment.ContentRootPath}/chromedriver.exe";
 
         /// <summary>
         /// Static CTOR
@@ -29,9 +30,8 @@ namespace ErayPDF
         {
             _pdfConversionOptions = new PdfConversionOptions();
             _webEnvironment = webEnvironment;
-
             // Check for any existing drivers.
-            if (!File.Exists($"{_webEnvironment.ContentRootPath}/chromedriver.exe"))
+            if (!File.Exists(driverPath))
                 throw new FileNotFoundException("Can't find any webdrivers.");
         }
 
@@ -43,7 +43,6 @@ namespace ErayPDF
         public async Task<byte[]> ConvertToBytes(string htmlPath)
         {
             string pdfPath = string.Empty;
-            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
 
             if (pdfPath == string.Empty)
                 throw new FileNotFoundException();
@@ -62,7 +61,6 @@ namespace ErayPDF
         {
 
             string pdfPath = string.Empty;
-            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
 
             var memStream = new MemoryStream(await File.ReadAllBytesAsync(pdfPath), false);
             File.Delete(pdfPath);
@@ -77,20 +75,56 @@ namespace ErayPDF
         /// <returns></returns>
         public string ConvertAndSavePDF(string htmlPath)
         {
-            string pdfPath = string.Empty;
-            _printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
+            string pdfPath = "example";
+            //_printStrategy.Execute(_pdfConversionOptions, DetermineDriverPathForConversion(), htmlPath, ref pdfPath);
+
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddArgument("headless");
+            using ChromeDriver driver = new ChromeDriver($"C:\\Projects\\ErayPDF\\ErayPDF\\chromium-102.0.5005.63-6_Win64", chromeOptions);
+            driver.Navigate().GoToUrl($"{Constants.LocalPrefix}{htmlPath}");
+
+            PdfConversionOptions options = new PdfConversionOptions
+            {
+                ShrinkToFit = true,
+                IncludeBackgroundGraphics = true,
+                OrientationType = PrintOrientation.Portrait,
+                ScaleFactor = 1.0,
+                MarginTop = 0,
+                MarginBottom = 0,
+                MarginLeft = 0,
+                MarginRight = 0,
+            };
+
+            var margins = new PrintOptions.Margins();
+            margins.Top = options.MarginTop;
+            margins.Bottom = options.MarginBottom;
+            margins.Left = options.MarginLeft;
+            margins.Right = options.MarginRight;
+
+            PrintOptions opts = new PrintOptions()
+            {
+                ShrinkToFit = options.ShrinkToFit,
+                OutputBackgroundImages = options.IncludeBackgroundGraphics,
+                Orientation = options.OrientationType,
+                ScaleFactor = options.ScaleFactor,
+                
+                PageDimensions =
+                {
+                    Width = 24.80,
+                    Height = 35.08
+                }
+
+            };
+            opts.PageMargins.Top = margins.Top;
+            opts.PageMargins.Bottom = margins.Bottom;
+            opts.PageMargins.Left = margins.Left;
+            opts.PageMargins.Right = margins.Right;
+
+            PrintDocument doc = driver.Print(opts);
+            pdfPath = $"{AppContext.BaseDirectory}{pdfPath}.{Constants.PdfSuffix}";
+            doc.SaveAsFile(pdfPath);
 
             return pdfPath;
-        }
-
-        /// <summary>
-        /// Traverses the project for any suitable webdriver.
-        /// </summary>
-        /// <returns>filepath for the found webdriver.</returns>
-        private string DetermineDriverPathForConversion()
-        {
-            // TODO: Path determination logic.
-            throw new NotImplementedException();
         }
 
     }

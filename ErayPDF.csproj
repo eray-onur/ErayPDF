@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="102.0.5005.6102" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,12 +21,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="drivers\chromedriver\" />
-    <Folder Include="drivers\edgedriver\" />
-    <Folder Include="drivers\firefoxdriver\" />
   </ItemGroup>
 
 </Project>
