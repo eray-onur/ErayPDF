@@ -453,6 +453,8 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+##
 ## CUSTOM
-chromium-*/
-Binaries/**
+##
+Binaries/Linux/*
+Binaries/Win64/*

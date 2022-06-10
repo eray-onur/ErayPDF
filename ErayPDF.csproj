@@ -29,6 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ProcessedFiles\**" />
+    <EmbeddedResource Remove="ProcessedFiles\**" />
+    <None Remove="ProcessedFiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Binaries\Linux\" />
   </ItemGroup>
 

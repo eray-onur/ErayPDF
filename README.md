@@ -7,15 +7,17 @@ This project is an attempt to provide an alternative way to convert plain HTML f
 <hr>
 
 #### Is the project production-ready?
-No. Conversion process is too hard-coded and inflexible to be used in a production project unless the requirement is generating a PDF with A4 page dimensions. Won't take long before it gets ready for general use cases, however.
+
+Only for A4-sized prints. Multiple size support is still a work in progress.
 
 #### Does this converter support latest HTML5/CSS3 features?
-Yes.
+Absolutely.
 #### What is the caveat?
 a Chromium binary MUST be added from https://chromium.woolyss.com/ to the root path or printing won't work! Couldn't get it into project as it'd turn the repo to LFS, sorry.
+As ErayPDF depends on Chromium 102, a portable browser, any project that utilizes it will face an overhead of over ~200 MBs in file size.
 <hr>
 
 #### Usage Example
 ```
-var result = HtmlToPdfConverter.ConvertAndSavePDF(filePath); // Returns generated pdf's path.
+string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example"); // Returns generated pdf's path.
 ```
