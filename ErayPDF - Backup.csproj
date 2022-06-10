@@ -21,15 +21,6 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <Content Include="./Binaries/**" CopyToOutputDirectory="PreserveNewest">
-    </Content>
-    <Content Include="./ProcessedFiles/**" CopyToOutputDirectory="PreserveNewest">
-      
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Binaries\Linux\" />
   </ItemGroup>
 
 </Project>
