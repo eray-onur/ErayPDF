@@ -17,7 +17,18 @@ a Chromium binary MUST be added from https://chromium.woolyss.com/ to the Binari
 As ErayPDF depends on Chromium 102, a portable browser, any project that utilizes it will face an overhead of over ~200 MBs in file size.
 <hr>
 
-#### Usage Example
+#### Usage Examples
 ```
-string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example"); // Returns generated pdf's path.
+    string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example"); // Returns generated pdf's path.
 ```
+```
+    byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>").Result.AsBinary(); // Returns generated pdf as a byte array.
+```
+```
+    string createdPdfBase64 = docBuilder.FromFilePath(htmlPath).AsBase64String(); // Returns generated pdf as a base64 string.
+```
+
+
+            
+
+            

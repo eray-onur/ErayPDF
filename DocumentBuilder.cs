@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ErayPDF.Models;
+
+using Microsoft.AspNetCore.Hosting;
 
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -6,6 +8,7 @@ using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +30,8 @@ namespace ErayPDF
         private string _htmlPathForPrint = Path.Join(AppContext.BaseDirectory, "ProcessedFiles", "HTML");
         // Where converted PDF files reside.
         private string _pdfPathForPrint = Path.Join(AppContext.BaseDirectory, "ProcessedFiles", "PDF");
-        private List<string> _htmlFilesForPrint = new List<string>();
+
+        private List<PrintableFileInformation> _htmlFilesForPrint = new List<PrintableFileInformation>();
 
         public DocumentBuilder()
         {
@@ -48,10 +52,10 @@ namespace ErayPDF
                 IncludeBackgroundGraphics = true,
                 OrientationType = PrintOrientation.Portrait,
                 ScaleFactor = 1.0,
-                MarginTop = 1,
-                MarginBottom = 1,
-                MarginLeft = 1,
-                MarginRight = 1,
+                MarginTop = 0,
+                MarginBottom = 0,
+                MarginLeft = 0,
+                MarginRight = 0,
             };
 
             _printOptions = new PrintOptions()
@@ -104,13 +108,23 @@ namespace ErayPDF
         }
 
         /// <summary>
-        /// Adding HTML via stringified content to be processed.
+        /// Creating an HTML file from plain string for printing.
         /// </summary>
-        /// <param name="htmlContent"></param>
+        /// <param name="htmlContent">Stringified HTML content.</param>
+        /// <param name="htmlName">Name of the HTML file. Defaults to a random UUID.</param>
+        /// <param name="shouldPersistHtmlFile">Whether or not the created HTML file should be persistent. Defaults to false.</param>
         /// <returns></returns>
-        public async Task<DocumentBuilder> FromHtmlContent(string htmlContent)
+        public async Task<DocumentBuilder> FromHtmlContent(string htmlContent, string htmlName = null, bool shouldPersistHtmlFile = false)
         {
-            await File.WriteAllTextAsync(_htmlPathForPrint, htmlContent);
+            if (htmlName == null)
+                htmlName = Guid.NewGuid().ToString();
+
+            var path = Path.Join(_htmlPathForPrint, htmlName);
+
+            await File.WriteAllTextAsync(path , htmlContent);
+
+            _htmlFilesForPrint.Add(new PrintableFileInformation(path, shouldPersistHtmlFile));
+
             return this;
         }
 
@@ -121,7 +135,7 @@ namespace ErayPDF
         /// <returns></returns>
         public DocumentBuilder FromFilePath(string htmlPath)
         {
-            _htmlFilesForPrint.Add(htmlPath);
+            _htmlFilesForPrint.Add(new PrintableFileInformation(htmlPath, true));
             return this;
         }
 
@@ -132,18 +146,11 @@ namespace ErayPDF
         /// <returns></returns>
         public string AsFilePath(string pdfName)
         {
-            var chromeOptions = new ChromeOptions();
-            chromeOptions.AddArgument("headless");
-            using ChromeDriver driver = new ChromeDriver(driverRootPath, chromeOptions);
-
-            var urlPath = Path.Join(Constants.LocalPrefix, _htmlFilesForPrint[0]);
-            driver.Navigate().GoToUrl(urlPath);
-
-            PrintDocument doc = driver.Print(_printOptions);
+            PrintDocument doc = PrintAsPdf();
             string pdfPath = Path.Join(_pdfPathForPrint, string.Concat(pdfName, ".", Constants.PdfSuffix));
             doc.SaveAsFile(pdfPath);
 
-            ResetPagesToPrint();
+            Cleanup();
 
             return pdfPath;
         }
@@ -153,22 +160,55 @@ namespace ErayPDF
         /// </summary>
         /// <param name="pdfPath"></param>
         /// <returns></returns>
-        public async Task<byte[]> AsBinary(string pdfName)
+        public byte[] AsBinary()
+        {
+            PrintDocument doc = PrintAsPdf();
+
+            Cleanup();
+            
+            var bytes = doc.AsByteArray;
+
+            return bytes;
+        }
+
+        public string AsBase64String()
+        {
+            PrintDocument doc = PrintAsPdf();
+
+            Cleanup();
+
+            string base64str = doc.AsBase64EncodedString;
+
+            return base64str;
+        }
+
+        private void Cleanup()
+        {
+            foreach(var fileInfo in _htmlFilesForPrint)
+            {
+                if (fileInfo.ShouldPersist == false)
+                {
+                    File.Delete(fileInfo.HtmlFilePath);
+                }
+            }
+            _htmlFilesForPrint.Clear();
+        }
+
+        private PrintDocument PrintAsPdf()
         {
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArgument("headless");
             using ChromeDriver driver = new ChromeDriver(driverRootPath, chromeOptions);
+            string foundHtmlPath = _htmlFilesForPrint[0].HtmlFilePath;
 
-            var urlPath = Path.Join(Constants.LocalPrefix, _htmlFilesForPrint[0]);
+            var urlPath = Path.Join(Constants.LocalPrefix, foundHtmlPath);
             driver.Navigate().GoToUrl(urlPath);
 
-            PrintDocument doc = driver.Print(_printOptions);
-            string pdfPath = Path.Join(_pdfPathForPrint, pdfName, Constants.PdfSuffix);
-            doc.SaveAsFile(pdfPath);
+            
+            PrintDocument doc = driver.Print(_printOptions);    
 
-            ResetPagesToPrint();
-
-            return await File.ReadAllBytesAsync(pdfPath);
+            return doc;
         }
+
     }
 }
