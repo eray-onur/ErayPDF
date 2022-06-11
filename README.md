@@ -18,14 +18,22 @@ As ErayPDF depends on Chromium 102, a portable browser, any project that utilize
 <hr>
 
 #### Usage Examples
+<hr>
+##### Returning generated PDF's persisted path:
 ```
-    string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example"); // Returns generated pdf's path.
+    string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example");
 ```
+##### Returning generated PDF as a byte array.
 ```
-    byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>").Result.AsBinary(); // Returns generated pdf as a byte array.
+    byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>").Result.AsBinary();
 ```
+##### Returning generated PDF as a byte array, while persisting the generated HTML file.
 ```
-    string createdPdfBase64 = docBuilder.FromFilePath(htmlPath).AsBase64String(); // Returns generated pdf as a base64 string.
+    byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>", true).Result.AsBinary();
+```
+##### Returning generated PDF as a base64 string.
+```
+    string createdPdfBase64 = docBuilder.FromFilePath(htmlPath).AsBase64String();
 ```
 
 

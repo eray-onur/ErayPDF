@@ -114,7 +114,7 @@ namespace ErayPDF
         /// <param name="htmlName">Name of the HTML file. Defaults to a random UUID.</param>
         /// <param name="shouldPersistHtmlFile">Whether or not the created HTML file should be persistent. Defaults to false.</param>
         /// <returns></returns>
-        public async Task<DocumentBuilder> FromHtmlContent(string htmlContent, string htmlName = null, bool shouldPersistHtmlFile = false)
+        public async Task<DocumentBuilder> FromHtmlContent(string htmlContent, bool shouldPersistHtmlFile = false, string htmlName = null)
         {
             if (htmlName == null)
                 htmlName = Guid.NewGuid().ToString();
