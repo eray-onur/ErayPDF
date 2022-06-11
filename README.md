@@ -6,6 +6,12 @@ This project is an attempt to provide an alternative way to convert plain HTML f
 
 <hr>
 
+#### When does ErayPDF become a valid choice for a PDF generation strategy?
+
+* When there is a requirement to generate PDF from an html file or string,
+* Projects that utilize WK for PDF generation will benefit from modern styling syntax support (ie. Flexbox, Grid, Hexcodes for colors),
+* Stability due to using an embedded browser for PDF generation. In local browsers, versions or even browser themselves can change which makes webdrivers useless until update.
+
 #### Is the project production-ready?
 
 Only for A4-sized prints. Multiple size support is still a work in progress.
