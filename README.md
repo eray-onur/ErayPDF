@@ -27,19 +27,19 @@ As ErayPDF depends on Chromium 102, a portable browser, any project that utilize
     string createdPdfPath = new DocumentBuilder().FromFilePath(htmlPath).AsFilePath("example");
 ```
 
-#### Returning generated PDF as a byte array.
+#### Returning generated PDF as a byte array:
 
 ```
     byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>").Result.AsBinary();
 ```
 
-#### Returning generated PDF as a byte array, while persisting the generated HTML file.
+#### Returning generated PDF as a byte array, while persisting the generated HTML file:
 
 ```
     byte[] createdPdfBytes = docBuilder.FromHtmlContent("<html></html>", true).Result.AsBinary();
 ```
 
-#### Returning generated PDF as a base64 string.
+#### Returning generated PDF as a base64 string:
 
 ```
     string createdPdfBase64 = docBuilder.FromFilePath(htmlPath).AsBase64String();
