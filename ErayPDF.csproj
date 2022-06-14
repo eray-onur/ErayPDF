@@ -20,7 +20,9 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <!--<Content Include="Binaries" CopyToOutputDirectory="PreserveNewest"></Content>-->
+    <!--
+    -->
+    <Content Include="Binaries/**" CopyToOutputDirectory="PreserveNewest"></Content>
     <!-- <Content Include="./ProcessedFiles/**" CopyToOutputDirectory="PreserveNewest"></Content> -->
   </ItemGroup>
 
@@ -32,6 +34,7 @@
 
   <ItemGroup>
     <Folder Include="Binaries\Linux\" />
+    <Folder Include="Binaries\Win64\" />
   </ItemGroup>
 
 </Project>

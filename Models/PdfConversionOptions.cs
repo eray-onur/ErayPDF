@@ -8,19 +8,19 @@ namespace ErayPDF.Models
 {
     public class PdfConversionOptions
     {
-        private readonly Dictionary<string, PageDimensions> pageDimensions = new Dictionary<string, PageDimensions>()
+        private readonly Dictionary<PageSize, PageDimensions> pageDimensions = new Dictionary<PageSize, PageDimensions>()
         {
-            { "A5", new PageDimensions(15, 21) },
-            { "A4", new PageDimensions(21, 29.7) },
-            { "A3", new PageDimensions(29.7, 42) },
-            { "A2", new PageDimensions(42, 59.4) },
-            { "A1", new PageDimensions(59.4, 84.1) },
-            { "legal", new PageDimensions(22, 36) },
-            { "letter", new PageDimensions(22, 28) },
-            { "tabloid", new PageDimensions(27.9, 43.2) }
+            { PageSize.A5, new PageDimensions(15, 21) },
+            { PageSize.A4, new PageDimensions(21, 29.7) },
+            { PageSize.A3, new PageDimensions(29.7, 42) },
+            { PageSize.A2, new PageDimensions(42, 59.4) },
+            { PageSize.A1, new PageDimensions(59.4, 84.1) },
+            { PageSize.Legal, new PageDimensions(22, 36) },
+            { PageSize.Letter, new PageDimensions(22, 28) },
+            { PageSize.Tabloid, new PageDimensions(27.9, 43.2) }
         };
         public PageDimensions selectedPageDimensions { get; set; }
-        public double ScaleFactor { get; set; } = 0.0;
+        public double ScaleFactor { get; set; } = 1.0;
         public double PageWidth { get; set; }
         public double PageHeight { get; set; }
         public double MarginTop { get; set; } = 0;
@@ -33,29 +33,21 @@ namespace ErayPDF.Models
         public bool ShrinkToFit { get; set; } = true;
         public PrintOrientation OrientationType { get; set; } = PrintOrientation.Portrait;
 
-        public PdfConversionOptions()
+        public PdfConversionOptions(PageSize pageSize = PageSize.A4)
         {
-            selectedPageDimensions = pageDimensions.GetValueOrDefault("A4");
+            selectedPageDimensions = pageDimensions.GetValueOrDefault(pageSize);
+
             PageWidth = selectedPageDimensions.Width;
             PageHeight = selectedPageDimensions.Width;
         }
 
-        public PdfConversionOptions(string pageType)
-        {
-            if(pageDimensions.ContainsKey(pageType))
-            {
-                selectedPageDimensions = pageDimensions.GetValueOrDefault(pageType);
-            }
-
-        }
-
-        public PdfConversionOptions(string pageType, double scaleFactor, 
+        public PdfConversionOptions(PageSize pageSize, double scaleFactor, 
             double pageWidth, double pageHeight, 
             double marginT, double marginB, double marginL, double marginR, PrintOrientation orientationType)
         {
-            if (pageDimensions.ContainsKey(pageType))
+            if (pageDimensions.ContainsKey(pageSize))
             {
-                selectedPageDimensions = pageDimensions.GetValueOrDefault(pageType);
+                selectedPageDimensions = pageDimensions.GetValueOrDefault(pageSize);
             }
 
             ScaleFactor = scaleFactor;
@@ -70,14 +62,14 @@ namespace ErayPDF.Models
 
         }
 
-        public PdfConversionOptions(string pageType, double scaleFactor,
+        public PdfConversionOptions(PageSize pageSize, double scaleFactor,
             double pageWidth, double pageHeight,
             double marginT, double marginB, double marginL, double marginR,
             bool includeBgGraphics, bool includeHeaderAndFooter, bool shrinkToFit, PrintOrientation orientationType)
         {
-            if (pageDimensions.ContainsKey(pageType))
+            if (pageDimensions.ContainsKey(pageSize))
             {
-                selectedPageDimensions = pageDimensions.GetValueOrDefault(pageType);
+                selectedPageDimensions = pageDimensions.GetValueOrDefault(pageSize);
             }
 
             ScaleFactor = scaleFactor;

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,11 +18,12 @@ namespace ErayPDF
     public class DocumentBuilder
     {
         // Directory path name of the chrome webdriver.
-        private string driverRootPath => $"{AppContext.BaseDirectory}/Binaries/Win64";
+        private string _chromiumRootPath => Path.Join(AppContext.BaseDirectory, "Binaries");
+
         // Chrome webdriver executable name.
-        private string driverName => "chromedriver.exe";
+        private string _driverName => "chromedriver.exe";
         // Path to the webdriver for chrome.
-        private string driverFullPath => Path.Join(driverRootPath, driverName);
+        private string _driverFullPath => Path.Join(findValidChromiumByOS(), _driverName);
 
         private PdfConversionOptions _convOptions;
         private PrintOptions _printOptions;
@@ -33,9 +35,31 @@ namespace ErayPDF
 
         private List<PrintableFileInformation> _htmlFilesForPrint = new List<PrintableFileInformation>();
 
-        public DocumentBuilder()
+        /// <summary>
+        /// Determining the path to chromium by hosted OS.
+        /// </summary>
+        /// <returns></returns>
+        private string findValidChromiumByOS()
         {
-            if (!File.Exists(driverFullPath))
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return Path.Join(_chromiumRootPath, "Win64");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return Path.Join(_chromiumRootPath, "Linux");
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return Path.Join(_chromiumRootPath, "OSX");
+            }
+
+            throw new InvalidOperationException("Current operating system is not supported.");
+        }
+
+        public DocumentBuilder(PdfConversionOptions options = null)
+        {
+            if (!File.Exists(_driverFullPath))
                 throw new FileNotFoundException("Can't find any webdrivers.");
 
             if (!Directory.Exists(_htmlPathForPrint))
@@ -45,18 +69,28 @@ namespace ErayPDF
                 Directory.CreateDirectory(_pdfPathForPrint);
 
 
+
             #region [Default Config Setup]
-            _convOptions = new PdfConversionOptions
+            if(options == null)
             {
-                ShrinkToFit = true,
-                IncludeBackgroundGraphics = true,
-                OrientationType = PrintOrientation.Portrait,
-                ScaleFactor = 1.0,
-                MarginTop = 0,
-                MarginBottom = 0,
-                MarginLeft = 0,
-                MarginRight = 0,
-            };
+                _convOptions = new PdfConversionOptions
+                {
+                    ShrinkToFit = true,
+                    IncludeBackgroundGraphics = true,
+                    OrientationType = PrintOrientation.Portrait,
+                    ScaleFactor = 1.0,
+                    MarginTop = 0,
+                    MarginBottom = 0,
+                    MarginLeft = 0,
+                    MarginRight = 0,
+                };
+            }
+            else
+            {
+                _convOptions = options;
+            }
+
+            #endregion
 
             _printOptions = new PrintOptions()
             {
@@ -64,13 +98,7 @@ namespace ErayPDF
                 OutputBackgroundImages = _convOptions.IncludeBackgroundGraphics,
                 Orientation = _convOptions.OrientationType,
                 ScaleFactor = _convOptions.ScaleFactor,
-
-                PageDimensions =
-                {
-                    Width = 21.0,
-                    Height = 29.7
-                }
-
+                PageDimensions = { Width = _convOptions.selectedPageDimensions.Width, Height = _convOptions.selectedPageDimensions.Height }
             };
 
 
@@ -85,8 +113,6 @@ namespace ErayPDF
             _printOptions.PageMargins.Bottom = margins.Bottom;
             _printOptions.PageMargins.Left = margins.Left;
             _printOptions.PageMargins.Right = margins.Right;
-
-            #endregion
 
         }
 
@@ -197,13 +223,13 @@ namespace ErayPDF
         private PrintDocument PrintAsPdf()
         {
             var chromeOptions = new ChromeOptions();
+            
             chromeOptions.AddArgument("headless");
-            using ChromeDriver driver = new ChromeDriver(driverRootPath, chromeOptions);
+            using ChromeDriver driver = new ChromeDriver(findValidChromiumByOS(), chromeOptions);
             string foundHtmlPath = _htmlFilesForPrint[0].HtmlFilePath;
 
             var urlPath = Path.Join(Constants.LocalPrefix, foundHtmlPath);
             driver.Navigate().GoToUrl(urlPath);
-
             
             PrintDocument doc = driver.Print(_printOptions);    
 
