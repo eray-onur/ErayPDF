@@ -133,7 +133,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Selenium.WebDriver/4.1.0": {
+      "Selenium.WebDriver/4.2.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -305,7 +305,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Selenium.WebDriver/4.1.0": {
+      "Selenium.WebDriver/4.2.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -477,7 +477,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "Selenium.WebDriver/4.1.0": {
+      "Selenium.WebDriver/4.2.0": {
         "type": "package",
         "dependencies": {
           "Newtonsoft.Json": "12.0.3"
@@ -680,10 +680,10 @@
         "packageIcon.png"
       ]
     },
-    "Selenium.WebDriver/4.1.0": {
-      "sha512": "d4smisz4a/wJCM2TzkKTl+BLfvZUTvaobhKElDfCVZlvY8ThsC8VAoBNWTlg1H/GGzIP//yVGko/W0FILTgkYA==",
+    "Selenium.WebDriver/4.2.0": {
+      "sha512": "1FE1Y1F0p6zuS/1RybCxkuoywVvcV2XJv10uqShOTNSpY/hyLM3Hk/D03CPmqkZ4l2vYArcjlunTV/FSY7dpmA==",
       "type": "package",
-      "path": "selenium.webdriver/4.1.0",
+      "path": "selenium.webdriver/4.2.0",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -695,7 +695,7 @@
         "lib/net5.0/WebDriver.dll",
         "lib/netstandard2.0/WebDriver.dll",
         "lib/netstandard2.1/WebDriver.dll",
-        "selenium.webdriver.4.1.0.nupkg.sha512",
+        "selenium.webdriver.4.2.0.nupkg.sha512",
         "selenium.webdriver.nuspec"
       ]
     },
@@ -772,15 +772,15 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "Microsoft.AspNetCore.Hosting.Abstractions >= 2.2.0",
-      "Selenium.WebDriver >= 4.1.0"
+      "Selenium.WebDriver >= 4.2.0"
     ],
     "net5.0": [
       "Microsoft.AspNetCore.Hosting.Abstractions >= 2.2.0",
-      "Selenium.WebDriver >= 4.1.0"
+      "Selenium.WebDriver >= 4.2.0"
     ],
     "net6.0": [
       "Microsoft.AspNetCore.Hosting.Abstractions >= 2.2.0",
-      "Selenium.WebDriver >= 4.1.0"
+      "Selenium.WebDriver >= 4.2.0"
     ]
   },
   "packageFolders": {
@@ -844,7 +844,7 @@
           },
           "Selenium.WebDriver": {
             "target": "Package",
-            "version": "[4.1.0, )"
+            "version": "[4.2.0, )"
           }
         },
         "imports": [
@@ -873,7 +873,7 @@
           },
           "Selenium.WebDriver": {
             "target": "Package",
-            "version": "[4.1.0, )"
+            "version": "[4.2.0, )"
           }
         },
         "imports": [
@@ -902,7 +902,7 @@
           },
           "Selenium.WebDriver": {
             "target": "Package",
-            "version": "[4.1.0, )"
+            "version": "[4.2.0, )"
           }
         },
         "imports": [

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "bDZSWS5/Q1nffXcuPzkPpVYAG70GGfXMnzdBZYhbnxhu6Ut+HFwhPx0PUElNcgv1ongtoOXIylWSLXgz/i6a+w==",
+  "dgSpecHash": "+2EYqDeJx1x/YxWBAB3LZQ2X4vwWl3w0iDd8B+rrPdHa19Q9iEJvh7BxNMh5iG7RKfM3SLI4imzEFnZDThoj8Q==",
   "success": true,
   "projectFilePath": "C:\\Projects\\ErayPDF\\ErayPDF\\ErayPDF.csproj",
   "expectedPackageFiles": [
@@ -15,7 +15,7 @@
     "C:\\Users\\eonur\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\2.2.0\\microsoft.extensions.logging.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\eonur\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
     "C:\\Users\\eonur\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\eonur\\.nuget\\packages\\selenium.webdriver\\4.1.0\\selenium.webdriver.4.1.0.nupkg.sha512",
+    "C:\\Users\\eonur\\.nuget\\packages\\selenium.webdriver\\4.2.0\\selenium.webdriver.4.2.0.nupkg.sha512",
     "C:\\Users\\eonur\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
     "C:\\Users\\eonur\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512",
     "C:\\Users\\eonur\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
