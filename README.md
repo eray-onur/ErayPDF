@@ -15,7 +15,7 @@ This project is an attempt to provide an alternative way to convert plain HTML f
 #### Supported Operating Systems
 
     OS       | Supported
--------------| ----------
+------------ | ----------
 Windows 10   | YES 
 Ubuntu 20.04 | NOT CONFIRMED
 OSX          | NOT CONFIRMED
