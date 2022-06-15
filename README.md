@@ -14,11 +14,9 @@ This project is an attempt to provide an alternative way to convert plain HTML f
 
 #### Supported Operating Systems
 
-    OS       | Supported
------------- | ----------
-Windows 10   | YES 
-Ubuntu 20.04 | NOT CONFIRMED
-OSX          | NOT CONFIRMED
+OS | Windows 10 | Ubuntu 20.04 | OSX
+--- | --- | --- | ---
+Supported | YES | NOT CONFIRMED | NOT CONFIRMED
 
 #### Does this converter support latest HTML5/CSS3 features?
 Absolutely.
