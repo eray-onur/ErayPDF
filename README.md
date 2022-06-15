@@ -12,12 +12,17 @@ This project is an attempt to provide an alternative way to convert plain HTML f
 * Projects that utilize WK for PDF generation will benefit from modern styling syntax support (ie. Flexbox, Grid, Hexcodes for colors),
 * Stability due to using an embedded browser for PDF generation. In local environment, browser versions or even browsers themselves can change which makes webdrivers useless until update.
 
-#### Is the project production-ready?
+#### Supported Operating Systems
 
-Only for A4-sized prints. Multiple size support is still a work in progress.
+    OS       | Supported
+-------------| ----------
+Windows 10   | YES 
+Ubuntu 20.04 | NOT CONFIRMED
+OSX          | NOT CONFIRMED
 
 #### Does this converter support latest HTML5/CSS3 features?
 Absolutely.
+
 #### What is the caveat?
 a Chromium binary MUST be added from https://chromium.woolyss.com/ to the Binaries directory at root path or printing won't work! Couldn't get it into project as it'd turn the repo to LFS, sorry.
 As ErayPDF depends on Chromium 102, a portable browser, any project that utilizes it will face an overhead of over ~200 MBs in file size.
