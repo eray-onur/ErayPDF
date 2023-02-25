@@ -145,9 +145,9 @@ namespace ErayPDF
             if (htmlName == null)
                 htmlName = Guid.NewGuid().ToString();
 
-            var path = Path.Join(_htmlPathForPrint, htmlName);
+            var path = Path.Join(_htmlPathForPrint, htmlName) + Constants.HtmlSuffix;
 
-            await File.WriteAllTextAsync(path , htmlContent);
+            await File.WriteAllTextAsync(path , htmlContent.Replace("\\", ""));
 
             _htmlFilesForPrint.Add(new PrintableFileInformation(path, shouldPersistHtmlFile));
 
@@ -157,7 +157,7 @@ namespace ErayPDF
         /// <summary>
         /// Adding HTML via path to be processed.
         /// </summary>
-        /// <param name="htmlPath"></param>
+        /// <param name="htmlPath">Absolute file path. CANNOT be relative.</param>
         /// <returns></returns>
         public DocumentBuilder FromFilePath(string htmlPath)
         {
@@ -168,12 +168,12 @@ namespace ErayPDF
         /// <summary>
         /// Returns the printed PDF files' path.
         /// </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
+        /// <param name="pdfName">Name of the generated PDF. Should not contain ".pdf" suffix, just required file name.</param>
+        /// <returns>File path of generated PDF.</returns>
         public string AsFilePath(string pdfName)
         {
             PrintDocument doc = PrintAsPdf();
-            string pdfPath = Path.Join(_pdfPathForPrint, string.Concat(pdfName, ".", Constants.PdfSuffix));
+            string pdfPath = Path.Join(_pdfPathForPrint, string.Concat(pdfName, Constants.PdfSuffix));
             doc.SaveAsFile(pdfPath);
 
             Cleanup();
@@ -184,8 +184,7 @@ namespace ErayPDF
         /// <summary>
         /// Returns the printed PDFs in binary format.
         /// </summary>
-        /// <param name="pdfPath"></param>
-        /// <returns></returns>
+        /// <returns>Binary data of generated PDF.</returns>
         public byte[] AsBinary()
         {
             PrintDocument doc = PrintAsPdf();
@@ -197,6 +196,10 @@ namespace ErayPDF
             return bytes;
         }
 
+        /// <summary>
+        /// Returning generated PDF in base64 string format.
+        /// </summary>
+        /// <returns>base64 pdf data.</returns>
         public string AsBase64String()
         {
             PrintDocument doc = PrintAsPdf();
@@ -220,10 +223,14 @@ namespace ErayPDF
             _htmlFilesForPrint.Clear();
         }
 
+        /// <summary>
+        /// Interacting with chrome driver in order to print documents through chromium binary located in 'Binaries'.
+        /// </summary>
+        /// <returns>Printed document's metadata.</returns>
         private PrintDocument PrintAsPdf()
         {
             var chromeOptions = new ChromeOptions();
-            chromeOptions.BinaryLocation = _chromiumRootPath;
+            chromeOptions.BinaryLocation = Path.Join(findValidChromiumByOS(), "chrome.exe");
             
             chromeOptions.AddArgument("headless");
             using ChromeDriver driver = new ChromeDriver(findValidChromiumByOS(), chromeOptions);

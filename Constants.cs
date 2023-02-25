@@ -9,6 +9,7 @@ namespace ErayPDF
         public const string LocalPrefix = "file:///";
         public const string HttpPrefix = "http://";
         public const string HttpsPrefix = "https://";
-        public const string PdfSuffix = "pdf";
+        public const string PdfSuffix = ".pdf";
+        public const string HtmlSuffix = ".html";
     }
 }
