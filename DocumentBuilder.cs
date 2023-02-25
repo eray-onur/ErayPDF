@@ -223,6 +223,7 @@ namespace ErayPDF
         private PrintDocument PrintAsPdf()
         {
             var chromeOptions = new ChromeOptions();
+            chromeOptions.BinaryLocation = _chromiumRootPath;
             
             chromeOptions.AddArgument("headless");
             using ChromeDriver driver = new ChromeDriver(findValidChromiumByOS(), chromeOptions);
