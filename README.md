@@ -19,7 +19,7 @@ OS | Windows 10 | Ubuntu 20.04 | OSX
 Supported | YES | NOT CONFIRMED | NOT CONFIRMED
 
 #### Does this converter support latest HTML5/CSS3 features?
-Absolutely.
+Absolutely. As ErayPDF will work with any version of chromium and chromedriver (as long as they are the same version), every bleeding edge HTML/CSS features will be supported.
 
 #### What is the caveat?
 A Chromium binary MUST be added from https://chromium.woolyss.com/ to the Binaries directory at root path or printing won't work! Couldn't get it into project as it'd turn the repo to LFS, sorry.
